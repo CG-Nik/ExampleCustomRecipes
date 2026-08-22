@@ -76,6 +76,28 @@ namespace ExampleCustomRecipes
             // similarly, that Mould Press will automatically allow any Items with the Weapon Part Hebios tag, meaning you don't need to manually add it if it has that tag
             // do note that other mods can add items to these lists as well
             CustomRecipesAPI.Core.itemsToAddToStandardMouldPress.Add(handleMediumCool);
+
+            // adds the Item('s Prefab's Hash) to a dictionary that CustomRecipesAPI has
+            // this dictionary is used to automatically offset the position that an item spawns at when creating one with the Smelter
+            // the purpose of this is to prevent certain items from getting stuck in the Smelter
+            // the Smelter assumes that items will either be small (like an Ingot) or have a pivot in a way where they'll face away from the Smelter (like a blade)
+            // this assumption (which is always true for all vanilla Moulds), leads to some items (like handles, which is what this example is using) getting stuck, as they don't follow that set of assumptions
+            // like itemsToAddToStandardMouldPress, your mod and other mods adding stuff to this dictionary can overlap
+            // to prevent issues with overlapping, always use "dictionary[key] = value" to set pairs in this
+            // also, the smelter's rotation isn't aligned with the X and Z axis, so this isn't directly applying to world space
+            // instead, it does some math and rotates this position offset to be local to the spawn's rotation, which allows you to act like this is world space anyways
+            // the point is, (0,0,1) is 1 unit backwards from the Smelter's point of view, but not actually 1 unit backwards in world space
+            // subtract from the X axis to make the item go right, add to make it go left
+            // subtract from the Z axis to make the item go forward, add to make it go backward
+            // Y axis is normal
+            CustomRecipesAPI.Core.smelterSpawnPositionOffsets[handleMediumCool.Prefab.Hash] = new Vector3(0f, -0.2f, -0.7f);
+            // same thing, but with the rotation
+            // another thing done to prevent overlapping is always setting both values if you set either value, to prevent one mod's position for an item from combining with another mod's rotation for an item
+            // as you can see, we set this to 0f,0f,0f, to have it not modify the rotation at all
+            CustomRecipesAPI.Core.smelterSpawnRotationOffsets[handleMediumCool.Prefab.Hash] = new Vector3(0f, 0f, 0f);
+            // you could also just remove the key
+            // this TECHNICALLY improves performance, but its literally one += that doesn't run, it doesn't matter
+            // CustomRecipesAPI.Core.smelterSpawnRotationOffsets.Remove(handleMediumCool.Prefab.Hash);
         }
     }
 }
