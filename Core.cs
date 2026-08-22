@@ -24,11 +24,12 @@ namespace ExampleCustomRecipes
         {
             // load assetbundle containing needed gameobjects made in the inspector, and then load those gameobjects
             AssetBundle assetBundle = AssetBundle.LoadFromFile(Path.Combine(MelonEnvironment.ModsDirectory, "ExampleCustomRecipes/AssetBundles/!examplecustomrecipes"));
-            // copy an existing MouldDefinition and modify its values
+            // load our gameobjects that were made in the inspector
+            // to make this in the inspector, copy an existing MouldDefinition and modify its values
             // the graphic will need to have its values of position, rotation, and scale set manually
             // to easily do this, keep some placeholders in the asset at first, go ingame with the unfinished asset and tweak the graphic position with UnityExplorer, then rebuild the asset with those new graphic positioning values
             MouldDefinition mouldDefinition = assetBundle.LoadAsset<MouldDefinition>("Handle Medium Cool Mould.asset");
-            // copy an existing MouldItemComponent and modify its value
+            // to make this in the inspector, copy an existing MouldItemComponent and modify its value
             MouldItemComponent mouldItemComponent = assetBundle.LoadAsset<MouldItemComponent>("Handle Medium Cool MIC.asset");
 
             // grab the HandleMediumCool Item for later use
