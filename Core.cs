@@ -4,6 +4,7 @@ using MelonLoader;
 using MelonLoader.Utils;
 using System.Reflection;
 using UnityEngine;
+using CustomRecipesAPI;
 
 [assembly: MelonInfo(typeof(ExampleCustomRecipes.Core), "ExampleCustomRecipes", "1.0.0", "CGNik", null)]
 [assembly: MelonGame("Alta", "A Township Tale")]
