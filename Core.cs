@@ -5,6 +5,7 @@ using MelonLoader.Utils;
 using UnityEngine;
 using CustomRecipesAPI;
 using Alta.Blacksmithing;
+using Alta.Carpentry;
 
 [assembly: MelonInfo(typeof(ExampleCustomRecipes.Core), "ExampleCustomRecipes", "1.0.0", "CGNik", null)]
 [assembly: MelonGame("Alta", "A Township Tale")]
@@ -39,6 +40,11 @@ namespace ExampleCustomRecipes
             MouldItemComponent mouldItemComponent = assetBundle.LoadAsset<MouldItemComponent>("Handle Medium Cool MIC Example.asset");
             // to make this in the inspector, copy an existing SmeltingRepice and modify its values
             SmeltingRecipe smeltingRecipe = assetBundle.LoadAsset<SmeltingRecipe>("Evinon Steel Decraft Example.asset");
+            // to make this in the inspector, copy an existing ChiselDefinition and modify its values
+            // make sure to set the glyph to None and then set it back in C#
+            // make sure the chisel order is 0-11, NOT 1-12 (I learned this the hard way while testing)
+                // also try to ensure that the chisel order is unique from any chisel orders from other mods
+            ChiselDefinition chiselDefinition = assetBundle.LoadAsset<ChiselDefinition>("Turabada Arm Recipe.asset");
 
             // instead of having you manually do a bunch of stuff in a specific way, you literally just need to call this one method (for Moulds)
             // itemHash refers to the hash of the item you're making a Mould for
@@ -55,6 +61,7 @@ namespace ExampleCustomRecipes
             // if you aren't modifying the item's position, don't set positionOffset (or make it null)
             // rotationOffset is a Vector3 that determines the offset in rotation that the item will spawn with out of the Smelter
             // if you aren't modifying the item's position, don't set rotationOffset (or make it null)
+            
             CustomRecipesAPI.Core.SetUpMould(25450u, mouldDefinition, mouldItemComponent, true, false, new Vector3(0f, -0.2f, -0.7f), null);
 
             // grab the 3rd Combat Trial's SmelterUpgrades for later use, i'd suggest doing this for any SmelterUpgrades you plan to add a SmeltingRecipe to
@@ -107,6 +114,13 @@ namespace ExampleCustomRecipes
                 smelterUpgrades_gem3,
                 true
             );
+            
+            // grabbing Turabada Arm for later use, as we need it for the Glyph that it has
+            Item turabadaArm = Item.All.Where(item => item.Hash == 7822u).First();
+            // sets up a ChiselDefinition
+            // chiselDefinition is the ChiselDefinition you're setting up
+            // glyph is the glyph to give the ChiselDefinition, can probably be null safely
+            CustomRecipesAPI.Core.SetUpChiselDefinition(chiselDefinition, turabadaArm.Glyph);
         }
     }
 }
