@@ -40,11 +40,6 @@ namespace ExampleCustomRecipes
             MouldItemComponent mouldItemComponent = assetBundle.LoadAsset<MouldItemComponent>("Handle Medium Cool MIC Example.asset");
             // to make this in the inspector, copy an existing SmeltingRepice and modify its values
             SmeltingRecipe smeltingRecipe = assetBundle.LoadAsset<SmeltingRecipe>("Evinon Steel Decraft Example.asset");
-            // to make this in the inspector, copy an existing ChiselDefinition and modify its values
-            // make sure to set the glyph to None and then set it back in C#
-            // make sure the chisel order is 0-11, NOT 1-12 (I learned this the hard way while testing)
-                // also try to ensure that the chisel order is unique from any chisel orders from other mods
-            ChiselDefinition chiselDefinition = assetBundle.LoadAsset<ChiselDefinition>("Turabada Arm Recipe.asset");
 
             // instead of having you manually do a bunch of stuff in a specific way, you literally just need to call this one method (for Moulds)
             // itemHash refers to the hash of the item you're making a Mould for
@@ -114,13 +109,31 @@ namespace ExampleCustomRecipes
                 smelterUpgrades_gem3,
                 true
             );
-            
-            // grabbing Turabada Arm for later use, as we need it for the Glyph that it has
-            Item turabadaArm = Item.All.Where(item => item.Hash == 7822u).First();
-            // sets up a ChiselDefinition
-            // chiselDefinition is the ChiselDefinition you're setting up
-            // glyph is the glyph to give the ChiselDefinition, can probably be null safely
-            CustomRecipesAPI.Core.SetUpChiselDefinition(chiselDefinition, turabadaArm.Glyph);
+
+            // grabbing the Wooden Stirring Spoon item to use for its Glyph
+            Item stirringSpoon = Item.All.Where(item => item.Hash == 41010u).First();
+            // creates and sets up a ChiselDefinition for you, entirely through code
+            // there was an old method involving AssetBundles, which is now outdated
+                // it can still be done, but it's highly unrecommended due to having no real purpose and just being harder to do
+            // hash is the hash you're giving to this ChiselDefinition
+            // glyph is the glyph that the ChiselDefinition will have
+            // size is the amount of wood you need for the recipe
+                // use the ChiselBlockSize enum for this
+                // Small is 6 wood wedges, Medium is 12 wood wedges, Large is 18 wood wedges
+            // chiselOrder is the order of pieces that you chisel to do the recipe
+                // this is from 0-11, NOT 1-12
+                // try to ensure that this is unique from chisel orders defined by other mods
+            // prefabs is the list of prefabs and their spawn positions that this ChiselDefinition will yield
+                // you should try to make the prefabs spawn in a reasonable place
+            CustomRecipesAPI.Core.SetUpChiselDefinitionThroughCode(
+                12521,
+                stirringSpoon.Glyph,
+                ChiselBlockSize.Medium,
+                [11, 10, 0, 1, 5, 3, 7, 2, 9, 4, 6, 8],
+                [
+                    CustomRecipesAPI.Core.CreatePrefabSpawnPosition(23950u, Vector3.zero, Quaternion.identity)
+                ]
+            );
         }
     }
 }
