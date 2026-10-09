@@ -57,7 +57,7 @@ namespace ExampleCustomRecipes
             // rotationOffset is a Vector3 that determines the offset in rotation that the item will spawn with out of the Smelter
             // if you aren't modifying the item's position, don't set rotationOffset (or make it null)
             
-            CustomRecipesAPI.Core.SetUpMould(25450u, mouldDefinition, mouldItemComponent, true, false, new Vector3(0f, -0.2f, -0.7f), null);
+            CustomRecipesAPI.Core.SetUpMould(Item.All.Where(item => item.Hash == 25450u).First(), mouldDefinition, mouldItemComponent, true, false, new Vector3(0f, -0.2f, -0.7f), null);
 
             // grab the 3rd Combat Trial's SmelterUpgrades for later use, i'd suggest doing this for any SmelterUpgrades you plan to add a SmeltingRecipe to
             SmelterUpgrades smelterUpgrades_gem3 = SmelterUpgrades.All.Where(upgrade => upgrade.Hash == 33428u).First();
@@ -126,6 +126,7 @@ namespace ExampleCustomRecipes
             // prefabs is the list of prefabs and their spawn positions that this ChiselDefinition will yield
                 // you should try to make the prefabs spawn in a reasonable place
             CustomRecipesAPI.Core.SetUpChiselDefinitionThroughCode(
+                "Stirring Spoon Recipe",
                 12521,
                 stirringSpoon.Glyph,
                 ChiselBlockSize.Medium,
