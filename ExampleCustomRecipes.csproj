@@ -13,6 +13,9 @@
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="AssetBundles\!examplecustomrecipes" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="Accessibility">
@@ -671,6 +674,10 @@
 	<ItemGroup>
 		<Compile Include="Core.cs" />
 		<Content Include="Directory.Build.props" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="AssetBundles\!examplecustomrecipes" />
 	</ItemGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
